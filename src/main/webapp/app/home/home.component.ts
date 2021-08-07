@@ -1,36 +1,30 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import { Component, OnInit } from '@angular/core';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'jhi-home',
+  selector: 'jhi-app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.component.css'],
+  providers : [NgbCarouselConfig],
+
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  account: Account | null = null;
+export class HomeComponent {
 
-  private readonly destroy$ = new Subject<void>();
+  images = [
+    { "src": "content/images/1.jpg", "title": "BROADCASTS IDEAS", "innerSrc":"content/images/sec1-img.png" },
+    { "src": "content/images/2.jpg", "title": "CREATE PROJECTS", "innerSrc":"content/images/sec2-img.png" },
+    { "src": "content/images/3.jpg", "title": "CREWSOURCE", "innerSrc":"content/images/sec3-img.png" }];
 
-  constructor(private accountService: AccountService, private router: Router) {}
+    public items= [
+      {"header":"Heading 1", "infoMsg":"Message1", "positions":5, "cast":10, "crew":2, "imgSrc":"content/images/1.jpg"},
+      {"header":"Heading 2", "infoMsg":"Message2", "positions":5, "cast":10, "crew":2, "imgSrc":"content/images/2.jpg"},
+      {"header":"Heading 3", "infoMsg":"Message3", "positions":5, "cast":10, "crew":2, "imgSrc":"content/images/3.jpg"},
+      {"header":"Heading 4", "infoMsg":"Message4", "positions":5, "cast":10, "crew":2, "imgSrc":"content/images/1.jpg"},
+      {"header":"Heading 5", "infoMsg":"Message5", "positions":5, "cast":10, "crew":2, "imgSrc":"content/images/2.jpg"}
+    ];
+//  constructor() { }
+//
+//  ngOnInit(): void {
+//  }
 
-  ngOnInit(): void {
-    this.accountService
-      .getAuthenticationState()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(account => (this.account = account));
-  }
-
-  login(): void {
-    this.router.navigate(['/login']);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }

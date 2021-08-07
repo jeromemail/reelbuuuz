@@ -1,40 +1,18 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 
-import { errorRoute } from './layouts/error/error.route';
-import { navbarRoute } from './layouts/navbar/navbar.route';
-import { DEBUG_INFO_ENABLED } from 'app/app.constants';
-import { Authority } from 'app/config/authority.constants';
+const routes:Routes = [
+  {path : 'home', component:HomeComponent},
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
-
-const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
+  {path: '', redirectTo:'/home', pathMatch:'full'}
+]
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(
-      [
-        {
-          path: 'admin',
-          data: {
-            authorities: [Authority.ADMIN],
-          },
-          canActivate: [UserRouteAccessService],
-          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
-        },
-        {
-          path: 'account',
-          loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
-        },
-        {
-          path: 'login',
-          loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
-        },
-        ...LAYOUT_ROUTES,
-      ],
-      { enableTracing: DEBUG_INFO_ENABLED }
-    ),
-  ],
-  exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+
+
+}
